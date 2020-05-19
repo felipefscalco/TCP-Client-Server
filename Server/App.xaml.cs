@@ -1,4 +1,6 @@
-﻿using Prism.Ioc;
+﻿using Common.Abstractions.Interfaces;
+using Common.Models;
+using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Unity;
 using Server.ViewModels;
@@ -16,6 +18,7 @@ namespace Server
         }
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.Register<ITcpHandler, ServerTcpHandler>();
         }
 
         protected override Window CreateShell()

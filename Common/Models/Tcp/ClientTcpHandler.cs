@@ -4,7 +4,7 @@ using Prism.Events;
 using System.IO;
 using System.Net.Sockets;
 
-namespace Common.Models
+namespace Common.Models.Tcp
 {
     public class ClientTcpHandler : ITcpHandler
     {

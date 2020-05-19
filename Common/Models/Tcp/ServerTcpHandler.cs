@@ -1,11 +1,12 @@
-﻿using Common.Messages;
+﻿using Common.Abstractions.Interfaces;
+using Common.Messages;
 using Prism.Events;
 using System.IO;
 using System.Net.Sockets;
 
 namespace Common.Models
 {
-    public class ServerTcpHandler
+    public class ServerTcpHandler : ITcpHandler
     {
         private TcpListener _server;
         private TcpClient _tcpClient;
@@ -20,7 +21,7 @@ namespace Common.Models
             _eventAggregator = eventAggregator;            
         }
 
-        public void StartServer()
+        public void Start()
         {
             _server = new TcpListener(8888);
             _server.Start();
@@ -43,7 +44,7 @@ namespace Common.Models
             //envia.Write($"Temperatura Minima -> {temperatures.Minimum}");
         }
 
-        public void CloseServer()
+        public void CloseConnection()
         {
             _server.Stop();
             _tcpClient.Close();

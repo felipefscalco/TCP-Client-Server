@@ -59,8 +59,9 @@
   <ItemGroup>
     <Compile Include="Abstractions\Interfaces\ITcpHandler.cs" />
     <Compile Include="Messages\AddConsoleMessage.cs" />
-    <Compile Include="Models\ClientTcpHandler.cs" />
-    <Compile Include="Models\ServerTcpHandler.cs" />
+    <Compile Include="Models\Contact.cs" />
+    <Compile Include="Models\Tcp\ClientTcpHandler.cs" />
+    <Compile Include="Models\Tcp\ServerTcpHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

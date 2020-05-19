@@ -1,4 +1,6 @@
 ﻿using Client.ViewModels;
+using Common.Abstractions.Interfaces;
+using Common.Models.Tcp;
 using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Unity;
@@ -16,6 +18,7 @@ namespace Client
         }
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.Register<ITcpHandler, ClientTcpHandler>();
         }
 
         protected override Window CreateShell()

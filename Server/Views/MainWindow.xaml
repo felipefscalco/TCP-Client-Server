@@ -20,6 +20,8 @@
             <ColumnDefinition Width="250"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <TextBox Background="Black" Foreground="White" Grid.Column="1" IsReadOnly="True" Text="{Binding ConsoleText}" ></TextBox>
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+            <TextBox Background="Black" Foreground="White" IsReadOnly="True" Text="{Binding ConsoleText}" ></TextBox>
+        </ScrollViewer>
     </Grid>
 </Window>

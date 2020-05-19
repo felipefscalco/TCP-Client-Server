@@ -1,5 +1,5 @@
-﻿using Common.Messages;
-using Common.Models;
+﻿using Common.Abstractions.Interfaces;
+using Common.Messages;
 using Prism.Events;
 using Prism.Mvvm;
 using System.Threading.Tasks;
@@ -9,7 +9,7 @@ namespace Server.ViewModels
     public class MainWindowViewModel : BindableBase
     {
         private IEventAggregator _eventAggregator;
-        private ServerTcpHandler _serverTcpHandler;
+        private ITcpHandler _tcpHandler;
         private string _consoleText;
 
         public string ConsoleText
@@ -18,9 +18,10 @@ namespace Server.ViewModels
             set => SetProperty(ref _consoleText, value);
         }
 
-        public MainWindowViewModel(IEventAggregator eventAggregator)
+        public MainWindowViewModel(IEventAggregator eventAggregator, ITcpHandler tcpHandler)
         {
             _eventAggregator = eventAggregator;
+            _tcpHandler = tcpHandler;
 
             ConsoleText = string.Empty;
 
@@ -38,6 +39,6 @@ namespace Server.ViewModels
          => ConsoleText += message;
 
         private void InitializeServer()
-            => new Task(() => _serverTcpHandler = new ServerTcpHandler(_eventAggregator)).Start();
+            => new Task(() => _tcpHandler.Start()).Start();
     }
 }
