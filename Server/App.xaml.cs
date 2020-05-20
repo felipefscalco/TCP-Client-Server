@@ -3,6 +3,7 @@ using Common.Models;
 using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Unity;
+using Server.Extensions;
 using Server.ViewModels;
 using System.Windows;
 
@@ -16,9 +17,12 @@ namespace Server
 
             ViewModelLocationProvider.Register<MainWindow, MainWindowViewModel>();
         }
+
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.Register<ITcpHandler, ServerTcpHandler>();
+
+            containerRegistry.RegisterRepositories();
         }
 
         protected override Window CreateShell()

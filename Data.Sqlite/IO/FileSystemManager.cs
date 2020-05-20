@@ -1,11 +1,11 @@
-﻿using Server.Abstractions;
+﻿using Data.Sqlite.IO.Interfaces;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Server.IO
+namespace Data.Sqlite.IO
 {
-    public sealed class FileSystemManager : IFileSystemManager
-    {
+    public class FileSystemManager : IFileSystemManager 
+    {        
         public Stream CreateFile(string path)
             => new FileStream(path, FileMode.Create);
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace Server.Abstractions
+namespace Data.Sqlite.IO.Interfaces
 {
     public interface IFileSystemManager
     {
