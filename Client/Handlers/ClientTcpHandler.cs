@@ -23,21 +23,25 @@ namespace Client.Handlers
             _eventAggregator = eventAggregator;
 
             SubscribeEvents();
+        }
 
-            //var day = ReadDay();
+        public void Start()
+        {
+            _tcpClient = new TcpClient("localhost", 8888);
 
-            //Writer.Write(day);
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Conexão estabelecida com o servidor..\n\n");
 
-            //Console.WriteLine("Aguardando a resposta do servidor..\n");
-            //var msg = Reader.ReadString();
-            //Console.WriteLine(msg);
-            //msg = Reader.ReadString();
-            //Console.WriteLine(msg);
-            //msg = Reader.ReadString();
-            //Console.WriteLine($"{msg} \n");
+            _networkStream = _tcpClient.GetStream();
+            Reader = new BinaryReader(_networkStream);
+            Writer = new BinaryWriter(_networkStream);
+        }
 
-            //Console.WriteLine("Digite qualquer tecla para sair!");
-            //Console.ReadKey();
+        public void CloseConnection()
+        {
+            _tcpClient.Close();
+            _networkStream.Close();
+            Reader.Close();
+            Writer.Close();
         }
 
         private void SubscribeEvents()
@@ -58,25 +62,6 @@ namespace Client.Handlers
             var messageFromServer = Reader.ReadString();
             
             _eventAggregator.GetEvent<AddConsoleMessage>().Publish(messageFromServer);
-        }
-
-        public void Start()
-        {
-            _tcpClient = new TcpClient("localhost", 8888);
-
-            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Conexão estabelecida com o servidor..\n\n");
-
-            _networkStream = _tcpClient.GetStream();
-            Reader = new BinaryReader(_networkStream);
-            Writer = new BinaryWriter(_networkStream);
-        }
-
-        public void CloseConnection()
-        {
-            _tcpClient.Close();
-            _networkStream.Close();
-            Reader.Close();
-            Writer.Close();
         }
     }
 }

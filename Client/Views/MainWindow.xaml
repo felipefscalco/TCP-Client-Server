@@ -11,8 +11,9 @@
         Width="800" 
         Margin="2"
         ResizeMode="NoResize"
+        UseLayoutRounding="True"
         WindowStartupLocation="CenterScreen">
-    
+
     <Grid Background="Gainsboro">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -20,12 +21,154 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0" IsEnabled="{Binding IsConnected}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
             <Menu Height="20" VerticalAlignment="Top">
-                <MenuItem Header="Criar contato" Command="{Binding ShowNewContactWindow}"></MenuItem>
+                <MenuItem Header="Menu" >
+                    <MenuItem Header="Criar contato" Command="{Binding ShowNewContactWindow}"></MenuItem>
+                    <MenuItem Header="Buscar todos contatos"></MenuItem>
+                </MenuItem>
             </Menu>
+
+            <TextBox Grid.Row="0" Width="120" HorizontalAlignment="Right" Margin="0, 1, 87, 1"></TextBox>
+            <Button Grid.Row="0" Width="85" Content="Buscar contato " HorizontalAlignment="Right" Margin="0, 1, 0, 1"></Button>
+
+            <ListView
+                Grid.Row="1"
+                AlternationCount="2"
+                ItemsSource="{Binding ContactList}"
+                SelectionMode="Single">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True">
+                                <Setter Property="IsSelected" Value="True" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="False">
+                                <Setter Property="IsSelected" Value="False" />
+                            </DataTrigger>
+
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                <Setter Property="Background" Value="#FFD9E6EE" />
+                            </Trigger>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                <Setter Property="Background" Value="#FFE4E9EC" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False">
+                        <GridView.Columns > 
+                            <GridViewColumn Header="Nome" Width="80" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"></TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Header="Telefone" Width="80">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock  Text="{Binding Telephone}"></TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Header="Email" Width="100">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Email}"></TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Header="Address" Width="210">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Address}"></TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Header="Ações">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid DataContext="{Binding ElementName=MainWindowViewModel}">
+                                            <Grid.Style>
+                                                <Style TargetType="{x:Type Grid}">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="False">
+                                                            <Setter Property="Opacity" Value="0" />
+                                                        </Trigger>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Opacity" Value="1" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Grid.Style>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="18" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1" />
+                                                <ColumnDefinition Width="18" />
+                                                <ColumnDefinition Width="3" />
+                                                <ColumnDefinition Width="18" />
+                                                <ColumnDefinition Width="1" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Button
+                                                Grid.Column="1"
+                                                Command="{Binding EditContactCommand}"
+                                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListView}}, Path=SelectedItem}"
+                                                Cursor="Hand"
+                                                ToolTip="Editar contato">
+                                                <Button.Template>
+                                                    <ControlTemplate>
+                                                        <Border HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <Image
+                                                                Width="18"
+                                                                Height="18"
+                                                                Source="..\Resources\edit-user.png" />
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+
+                                            <Button
+                                                Grid.Column="3"
+                                                Command="{Binding DeleteContactCommand}"
+                                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListView}}, Path=SelectedItem}"
+                                                Cursor="Hand"
+                                                ToolTip="Deletar contato">
+                                                <Button.Template>
+                                                    <ControlTemplate>
+                                                        <Border HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <Image
+                                                                Width="18"
+                                                                Height="18"
+                                                                Source="..\Resources\delete-user.png" />
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Grid>
 
-        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">            
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
             <TextBox Background="Black" Foreground="White" IsReadOnly="True" Text="{Binding ConsoleText}" ></TextBox>
         </ScrollViewer>
     </Grid>

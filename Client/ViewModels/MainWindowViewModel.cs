@@ -1,11 +1,13 @@
 ﻿using Client.Views;
 using Common.Abstractions.Interfaces;
 using Common.Messages;
+using Common.Models;
 using Polly;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace Client.ViewModels
@@ -14,8 +16,15 @@ namespace Client.ViewModels
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly ITcpHandler _tcpHandler;
+        private ObservableCollection<Contact> _contactList;
         private string _consoleText;
         private bool _isConnected;
+
+        public ObservableCollection<Contact> ContactList
+        {
+            get => _contactList;
+            set => SetProperty(ref _contactList, value);
+        }
 
         public bool IsConnected
         {
@@ -35,6 +44,15 @@ namespace Client.ViewModels
         {
             _eventAggregator = eventAggregator;
             _tcpHandler = tcpHandler;
+
+            ContactList = new ObservableCollection<Contact>
+            {
+                new Contact(Guid.NewGuid(), "name", "telephone", "email", "address"),
+                new Contact(Guid.NewGuid(), "name", "telephone", "email", "address"),
+                new Contact(Guid.NewGuid(), "name", "telephone", "email", "address"),
+                new Contact(Guid.NewGuid(), "name", "telephone", "email", "address"),
+                new Contact(Guid.NewGuid(), "name", "telephone", "email", "address")
+            };
 
             ConsoleText = string.Empty;
 
