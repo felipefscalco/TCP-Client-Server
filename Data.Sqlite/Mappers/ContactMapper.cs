@@ -28,6 +28,7 @@ namespace Data.Sqlite.Mappers
 
             return new Entities.Contact
             {
+                Id = contact.Id.ToString(),
                 Address = contact.Address,
                 Email = contact.Email,
                 Name = contact.Name,

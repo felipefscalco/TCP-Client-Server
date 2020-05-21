@@ -83,6 +83,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\ContactsQueryBuilder.cs" />
+    <Compile Include="Builders\Interfaces\IContactsQueryBuilder.cs" />
+    <Compile Include="DbConnectionExtensions.cs" />
     <Compile Include="Entities\Contact.cs" />
     <Compile Include="Executors\DapperDbExecutor.cs" />
     <Compile Include="Executors\Interfaces\IDbExecutor.cs" />

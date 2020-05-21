@@ -1,4 +1,6 @@
 ﻿using Data.Sqlite;
+using Data.Sqlite.Builders;
+using Data.Sqlite.Builders.Interfaces;
 using Data.Sqlite.Executors;
 using Data.Sqlite.Executors.Interfaces;
 using Data.Sqlite.Interfaces;
@@ -16,7 +18,7 @@ namespace Server.Extensions
 {
     public static class ContainerRegistryExtensions
     {
-        public static void RegisterRepositories(this IContainerRegistry containerRegistry)
+        public static void RegisterRepositorieDependencies(this IContainerRegistry containerRegistry)
         {            
             containerRegistry.Register<IContactRepository, ContactRepository>();
             containerRegistry.Register<IEnvironmentSettingsProvider, EnvironmentSettingsProvider>();
@@ -24,6 +26,7 @@ namespace Server.Extensions
             containerRegistry.Register<IFileSystemManager, FileSystemManager>();
             containerRegistry.Register<IDbExecutor, DapperDbExecutor>();
             containerRegistry.Register<IDatabase, SqliteDatabase>();
+            containerRegistry.Register<IContactsQueryBuilder, ContactsQueryBuilder>();
         }
     }
 }

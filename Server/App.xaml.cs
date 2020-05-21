@@ -1,9 +1,9 @@
 ﻿using Common.Abstractions.Interfaces;
-using Common.Models;
 using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Unity;
 using Server.Extensions;
+using Server.Handlers;
 using Server.ViewModels;
 using System.Windows;
 
@@ -22,7 +22,7 @@ namespace Server
         {
             containerRegistry.Register<ITcpHandler, ServerTcpHandler>();
 
-            containerRegistry.RegisterRepositories();
+            containerRegistry.RegisterRepositorieDependencies();
         }
 
         protected override Window CreateShell()

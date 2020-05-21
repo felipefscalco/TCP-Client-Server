@@ -1,8 +1,10 @@
 ﻿using Common.Abstractions.Interfaces;
 using Common.Messages;
+using Common.Models;
 using Data.Sqlite.Repositories.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
+using System;
 using System.Threading.Tasks;
 
 namespace Server.ViewModels
@@ -36,6 +38,23 @@ namespace Server.ViewModels
         private void SubscribeEvents()
         {
             _eventAggregator.GetEvent<AddConsoleMessage>().Subscribe(AddConsoleMessageHandler);
+            _eventAggregator.GetEvent<ServerCreateContactMessage>().Subscribe(CreateContact);
+        }
+
+        private void CreateContact(Contact newContact)
+        {
+            if (string.IsNullOrEmpty(newContact.Name) || string.IsNullOrEmpty(newContact.Email))
+            {
+                _eventAggregator.GetEvent<SendMessageFromServerToClientMessage>().Publish("Não foi possível inserir o contato, nome e email são obrigatórios.");
+                _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Erro ao tentar inserir contato.");
+                return;
+            }
+            else
+            {
+                _contactRepository.InsertContactAsync(newContact);
+                _eventAggregator.GetEvent<SendMessageFromServerToClientMessage>().Publish("Contato inserido com sucesso.");
+                _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Contato inserido com sucesso.");
+            }
         }
 
         private void AddConsoleMessageHandler(string message)

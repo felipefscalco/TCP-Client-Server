@@ -1,8 +1,11 @@
-﻿using Common.Abstractions.Interfaces;
+﻿using Client.Views;
+using Common.Abstractions.Interfaces;
 using Common.Messages;
-using Common.Models;
+using Polly;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using System;
 using System.Threading.Tasks;
 
 namespace Client.ViewModels
@@ -12,12 +15,21 @@ namespace Client.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private readonly ITcpHandler _tcpHandler;
         private string _consoleText;
+        private bool _isConnected;
+
+        public bool IsConnected
+        {
+            get => _isConnected;
+            set => SetProperty(ref _isConnected, value);
+        }
 
         public string ConsoleText
         {
             get => _consoleText;
             set => SetProperty(ref _consoleText, value);
         }
+
+        public DelegateCommand ShowNewContactWindow { get; private set; }
 
         public MainWindowViewModel(IEventAggregator eventAggregator, ITcpHandler tcpHandler)
         {
@@ -28,7 +40,14 @@ namespace Client.ViewModels
 
             SubscribeEvents();
 
-            InitializeClient();
+            CreateCommands();
+
+            InitializeClient().ConfigureAwait(false);
+        }
+
+        private void CreateCommands()
+        {
+            ShowNewContactWindow = new DelegateCommand(() => new NewContactView().ShowDialog());
         }
 
         private void SubscribeEvents()
@@ -39,7 +58,26 @@ namespace Client.ViewModels
         private void AddConsoleMessageHandler(string message)
          => ConsoleText += message;
 
-        private void InitializeClient()
-            => new Task(() => _tcpHandler.Start()).Start();
+        private async Task InitializeClient()
+        {
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Conectando com o servidor..\n\n");
+
+            var maxRetryAttempts = 5;
+            var pauseBetweenFailures = TimeSpan.FromSeconds(5);
+
+            var retryPolicy = Policy
+                .Handle<System.Net.Sockets.SocketException>()
+                .WaitAndRetryAsync(maxRetryAttempts, i => pauseBetweenFailures);
+
+            var result = await retryPolicy.ExecuteAndCaptureAsync(async () =>
+            {
+                await Task.Run(() => _tcpHandler.Start());
+            });
+
+            if (result.Outcome == OutcomeType.Failure)
+                _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Não foi possível conectar com o servidor..\n\n");
+            else
+                IsConnected = true;
+        }
     }
 }

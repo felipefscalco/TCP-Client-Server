@@ -10,7 +10,7 @@ namespace Data.Sqlite.Providers
         public EnvironmentSettingsProvider()
         {
             string myDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            LocalDatabasePath = Path.Combine(myDocuments, "db", "contact.db");
+            LocalDatabasePath = Path.Combine(myDocuments, "databases", "contacts.db");
         }
     }
 }

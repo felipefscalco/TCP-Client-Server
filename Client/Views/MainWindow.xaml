@@ -12,13 +12,18 @@
         Margin="2"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
-        <!--Icon="../Resources/client.png"-->
     
     <Grid Background="Gainsboro">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="250"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" IsEnabled="{Binding IsConnected}">
+            <Menu Height="20" VerticalAlignment="Top">
+                <MenuItem Header="Criar contato" Command="{Binding ShowNewContactWindow}"></MenuItem>
+            </Menu>
+        </Grid>
 
         <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">            
             <TextBox Background="Black" Foreground="White" IsReadOnly="True" Text="{Binding ConsoleText}" ></TextBox>

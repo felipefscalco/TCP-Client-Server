@@ -58,10 +58,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstractions\Interfaces\ITcpHandler.cs" />
+    <Compile Include="Enums\ActionType.cs" />
     <Compile Include="Messages\AddConsoleMessage.cs" />
+    <Compile Include="Messages\ClientCreateContactMessage.cs" />
+    <Compile Include="Messages\SendMessageFromServerToClientMessage.cs" />
+    <Compile Include="Messages\ServerCreateContactMessage.cs" />
     <Compile Include="Models\Contact.cs" />
-    <Compile Include="Models\Tcp\ClientTcpHandler.cs" />
-    <Compile Include="Models\Tcp\ServerTcpHandler.cs" />
+    <Compile Include="Models\MessageExchange.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

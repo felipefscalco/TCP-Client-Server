@@ -68,7 +68,7 @@ namespace Data.Sqlite
             {
                 var sql = @"PRAGMA foreign_keys = off;
                             BEGIN TRANSACTION;
-                            CREATE TABLE if not exists Contacts (id VARCHAR (36) PRIMARY KEY UNIQUE NOT NULL, type INTEGER NOT NULL, name VARCHAR(100) NOT NULL, telephone VARCHAR(20), email VARCHAR(60), address VARCHAR(100));
+                            CREATE TABLE if not exists Contacts (id VARCHAR (36) PRIMARY KEY UNIQUE NOT NULL, name VARCHAR(100) NOT NULL, telephone VARCHAR(20), email VARCHAR(60), address VARCHAR(100));
                             COMMIT TRANSACTION;
                             PRAGMA foreign_keys = on;";
 

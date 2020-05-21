@@ -1,6 +1,7 @@
-﻿using Client.ViewModels;
+﻿using Client.Handlers;
+using Client.ViewModels;
+using Client.Views;
 using Common.Abstractions.Interfaces;
-using Common.Models.Tcp;
 using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Unity;
@@ -15,6 +16,7 @@ namespace Client
             base.ConfigureViewModelLocator();
 
             ViewModelLocationProvider.Register<MainWindow, MainWindowViewModel>();
+            ViewModelLocationProvider.Register<NewContactView, NewContactViewModel>();
         }
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
