@@ -113,7 +113,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Extensions\ContainerRegistryExtensions.cs" />
+    <Compile Include="Extensions\MessageExchangeExtensions.cs" />
     <Compile Include="Handlers\ServerTcpHandler.cs" />
+    <Compile Include="Message\EditContactMessage.cs" />
+    <Compile Include="Message\GetAllContactsMessage.cs" />
+    <Compile Include="Message\SendMessageToClientMessage.cs" />
+    <Compile Include="Message\CreateContactMessage.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

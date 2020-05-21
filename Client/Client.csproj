@@ -107,11 +107,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\ContactUserControl.xaml.cs">
+      <DependentUpon>ContactUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Handlers\ClientTcpHandler.cs" />
+    <Compile Include="Messages\CreateContactMessage.cs" />
+    <Compile Include="Messages\EditContactMessage.cs" />
+    <Compile Include="Messages\GetAllContactsMessage.cs" />
+    <Compile Include="Messages\UpdateContactsMessage.cs" />
+    <Compile Include="ViewModels\EditContactViewModel.cs" />
     <Compile Include="ViewModels\NewContactViewModel.cs" />
+    <Compile Include="Views\EditContactView.xaml.cs">
+      <DependentUpon>EditContactView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NewContactView.xaml.cs">
       <DependentUpon>NewContactView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\ContactUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditContactView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

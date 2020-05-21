@@ -6,7 +6,6 @@ using Data.Sqlite.Mappers.Interfaces;
 using Data.Sqlite.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading.Tasks;
 
 namespace Data.Sqlite.Repositories
@@ -31,9 +30,18 @@ namespace Data.Sqlite.Repositories
             return null;
         }       
 
-        public Task<IEnumerable<Contact>> GetAllContactsAsync()
+        public async Task<IEnumerable<Contact>> GetAllContactsAsync()
         {
-            throw new NotImplementedException();
+            using (var connection = _database.GetDbConnection())
+            {
+                connection.EnsureConnectionOpen();
+
+                var sql = _contactsQueryBuilder.CreateGetAllContactsQuery();
+
+                var dbContacts = await _dbExecutor.QueryAsync<Entities.Contact>(connection, sql).ConfigureAwait(false);
+                
+                return _contactMapper.Map(dbContacts);
+            }
         }
 
         public async Task InsertContactAsync(Contact contact)
@@ -42,18 +50,25 @@ namespace Data.Sqlite.Repositories
             {
                 connection.EnsureConnectionOpen();
 
-                var dbCustomers = _contactMapper.Map(contact);
+                var dbContact = _contactMapper.Map(contact);
 
-                await _dbExecutor.InsertAsync(connection, dbCustomers).ConfigureAwait(false);
+                await _dbExecutor.InsertAsync(connection, dbContact).ConfigureAwait(false);
             }
         }
 
-        public Task UpdateContactAsync(Contact contact)
+        public async Task UpdateContactAsync(Contact contact)
         {
-            throw new NotImplementedException();
+            using (var connection = _database.GetDbConnection())
+            {
+                connection.EnsureConnectionOpen();
+                
+                var sql = _contactsQueryBuilder.CreateUpdateContactQuery(contact);
+
+                await _dbExecutor.ExecuteAsync(connection, sql).ConfigureAwait(false);
+            }
         }
         
-        public Task DeleteContactAsync(Guid contactId)
+        public async Task DeleteContactAsync(Guid contactId)
         {
             throw new NotImplementedException();
         }

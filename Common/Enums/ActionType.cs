@@ -2,6 +2,9 @@
 {
     public enum ActionType
     {
-        NewContact
+        NewContact,
+        EditContact,
+        DeleteContact,
+        GetAllContacts
     }
 }

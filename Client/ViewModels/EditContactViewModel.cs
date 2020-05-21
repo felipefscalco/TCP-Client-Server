@@ -8,13 +8,20 @@ using System;
 
 namespace Client.ViewModels
 {
-    public class NewContactViewModel : BindableBase
+    public class EditContactViewModel : BindableBase
     {
         private readonly IEventAggregator _eventAggregator;
         private string _name;
         private string _telephone;
         private string _email;
         private string _address;
+        private Guid _id;
+
+        public Guid Id
+        {
+            get => _id;
+            set => SetProperty(ref _id, value);
+        }
 
         public string Address
         {
@@ -40,20 +47,29 @@ namespace Client.ViewModels
             set => SetProperty(ref _name, value);
         }
 
-        public NewContactView Window { get; set; }
+        public EditContactView Window { get; set; }
 
-        public DelegateCommand CreateContactCommand { get; }
+        public DelegateCommand EditContactCommand { get; }
 
-        public NewContactViewModel(IEventAggregator eventAggregator)
+        public EditContactViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
 
-            CreateContactCommand = new DelegateCommand(() =>
+            EditContactCommand = new DelegateCommand(() =>
             {
-                var newContact = new Contact(Guid.NewGuid(), Name, Telephone, Email, Address);
-                _eventAggregator.GetEvent<CreateContactMessage>().Publish(newContact);
+                var contactEdited = new Contact(Id, Name, Telephone, Email, Address);
+                _eventAggregator.GetEvent<EditContactMessage>().Publish(contactEdited);
                 Window.Close();
             });
+        }
+
+        public void SetContactDetails(Contact contact)
+        {
+            Id = contact.Id;
+            Name = contact.Name;
+            Telephone = contact.Telephone;
+            Email = contact.Email;
+            Address = contact.Address;
         }
     }
 }

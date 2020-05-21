@@ -9,7 +9,7 @@ namespace Data.Sqlite.Builders.Interfaces
         
         string CreateGetAllContactsQuery();
 
-        string CreateUpdateContactQuery(Guid id);
+        string CreateUpdateContactQuery(Contact contact);
 
         string CreateDeleteContactQuery(Guid id);
     }

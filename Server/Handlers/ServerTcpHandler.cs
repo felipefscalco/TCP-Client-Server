@@ -4,6 +4,8 @@ using Common.Messages;
 using Common.Models;
 using Newtonsoft.Json;
 using Prism.Events;
+using Server.Extensions;
+using Server.Message;
 using System.IO;
 using System.Net.Sockets;
 
@@ -28,7 +30,7 @@ namespace Server.Handlers
 
         private void SubscribeEvents()
         {
-            _eventAggregator.GetEvent<SendMessageFromServerToClientMessage>().Subscribe(SendMessageToClient);
+            _eventAggregator.GetEvent<SendMessageToClientMessage>().Subscribe(SendMessageToClient);
         }
 
         private void SendMessageToClient(string message)
@@ -54,17 +56,27 @@ namespace Server.Handlers
             {
                 var jsonMessage = Reader.ReadString();
                 var message = JsonConvert.DeserializeObject<MessageExchange>(jsonMessage);
-                if (message.Action == ActionType.NewContact)
-                {
-                    var contact = JsonConvert.DeserializeObject<Contact>(message.Content);
-                    _eventAggregator.GetEvent<ServerCreateContactMessage>().Publish(contact);
-                }
+
+                ResolveAction(message);
             }
+        }
 
-
-            //Console.WriteLine($"Cliente escolheu o dia {day}\n");
-
-            //envia.Write($"Temperatura Minima -> {temperatures.Minimum}");
+        private void ResolveAction(MessageExchange message)
+        {
+            switch (message.Action)
+            {
+                case ActionType.NewContact:
+                    message.CreateNewContact(_eventAggregator);
+                    break;
+                case ActionType.GetAllContacts:
+                    _eventAggregator.GetEvent<GetAllContactsMessage>().Publish();
+                    break;
+                case ActionType.EditContact:
+                    message.EditContact(_eventAggregator);
+                    break;
+                default:
+                    break;
+            }            
         }
 
         public void CloseConnection()

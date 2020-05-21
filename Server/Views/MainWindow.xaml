@@ -9,7 +9,7 @@
         Title="Servidor" 
         Icon="../Resources/server.png"
         Height="450" 
-        Width="800" 
+        Width="500" 
         Margin="2"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
@@ -17,7 +17,6 @@
     <Grid Background="Gainsboro">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="250"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">

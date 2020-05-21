@@ -1,4 +1,4 @@
-﻿<Window x:Class="Client.Views.NewContactView"
+﻿<Window x:Class="Client.Views.EditContactView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:prism="http://prismlibrary.com/"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,8 +7,8 @@
         xmlns:controls="clr-namespace:Client.Controls"
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
-        Title="Novo Contato" 
-        Height="240"
+        Title="Editar Contato" 
+        Height="235"
         Width="220"
         Margin="2"
         ResizeMode="NoResize"
@@ -21,7 +21,6 @@
 
         <controls:ContactUserControl Grid.Row="0"/>
 
-        <Button Grid.Row="1" Margin="0, 0, 0, 3" Width="195" HorizontalAlignment="Center" Content="Salvar" Command="{Binding CreateContactCommand}"></Button>
-
+        <Button Grid.Row="1" Margin="0, 0, 0, 3" Width="195" HorizontalAlignment="Center" Content="Salvar" Command="{Binding EditContactCommand}"></Button>
     </Grid>
 </Window>

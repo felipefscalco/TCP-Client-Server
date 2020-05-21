@@ -12,8 +12,8 @@ namespace Data.Sqlite.Builders
         public string CreateGetContactQuery(Guid id)
             => $"select * from Contacts where id = '{id}'";
 
-        public string CreateUpdateContactQuery(Guid id)
-            => $"select * from Contacts";
+        public string CreateUpdateContactQuery(Contact contact)
+            => $"update Contacts set name={contact.Name}, telephone={contact.Telephone}, email={contact.Email}, address={contact.Address} where Id='{contact.Id}'";
 
         public string CreateDeleteContactQuery(Guid id)
             => $"select * from Contacts";

@@ -1,4 +1,5 @@
-﻿using Client.Views;
+﻿using Client.Messages;
+using Client.Views;
 using Common.Abstractions.Interfaces;
 using Common.Messages;
 using Common.Models;
@@ -7,6 +8,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -38,23 +40,18 @@ namespace Client.ViewModels
             set => SetProperty(ref _consoleText, value);
         }
 
-        public DelegateCommand ShowNewContactWindow { get; private set; }
+        public DelegateCommand ShowNewContactWindowCommand { get; private set; }
+        public DelegateCommand GetAllContactsCommand { get; private set; }
+        public DelegateCommand<Contact> EditContactCommand { get; private set; }
+        public DelegateCommand DeleteContactCommand { get; private set; }
 
         public MainWindowViewModel(IEventAggregator eventAggregator, ITcpHandler tcpHandler)
         {
             _eventAggregator = eventAggregator;
             _tcpHandler = tcpHandler;
 
-            ContactList = new ObservableCollection<Contact>
-            {
-                new Contact(Guid.NewGuid(), "name", "telephone", "email", "address"),
-                new Contact(Guid.NewGuid(), "name", "telephone", "email", "address"),
-                new Contact(Guid.NewGuid(), "name", "telephone", "email", "address"),
-                new Contact(Guid.NewGuid(), "name", "telephone", "email", "address"),
-                new Contact(Guid.NewGuid(), "name", "telephone", "email", "address")
-            };
-
             ConsoleText = string.Empty;
+            ContactList = new ObservableCollection<Contact>();
 
             SubscribeEvents();
 
@@ -65,12 +62,21 @@ namespace Client.ViewModels
 
         private void CreateCommands()
         {
-            ShowNewContactWindow = new DelegateCommand(() => new NewContactView().ShowDialog());
+            ShowNewContactWindowCommand = new DelegateCommand(() => new NewContactView().ShowDialog());
+            EditContactCommand = new DelegateCommand<Contact>((contact) => new EditContactView(contact).ShowDialog());
+            GetAllContactsCommand = new DelegateCommand(() => _eventAggregator.GetEvent<GetAllContactsMessage>().Publish());
         }
 
         private void SubscribeEvents()
         {
             _eventAggregator.GetEvent<AddConsoleMessage>().Subscribe(AddConsoleMessageHandler);
+            _eventAggregator.GetEvent<UpdateContactsMessage>().Subscribe(UpdateContacts);
+        }
+
+        private void UpdateContacts(List<Contact> contacts)
+        {
+            ContactList.Clear();
+            ContactList.AddRange(contacts);
         }
 
         private void AddConsoleMessageHandler(string message)

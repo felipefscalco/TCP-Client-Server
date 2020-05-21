@@ -1,4 +1,5 @@
 ﻿using Common.Enums;
+using System;
 
 namespace Common.Models
 {
@@ -7,7 +8,7 @@ namespace Common.Models
         public ActionType Action { get; set; }
         public string Content { get; set; }
 
-        public MessageExchange(ActionType action, string content)
+        public MessageExchange(ActionType action, string content = null)
         {
             Action = action;
             Content = content;

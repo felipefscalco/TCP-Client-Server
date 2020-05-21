@@ -1,11 +1,15 @@
-﻿using Common.Abstractions.Interfaces;
+﻿using Client.Messages;
+using Common.Abstractions.Interfaces;
 using Common.Enums;
 using Common.Messages;
 using Common.Models;
 using Newtonsoft.Json;
 using Prism.Events;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
+using System.Windows.Documents;
 
 namespace Client.Handlers
 {
@@ -46,7 +50,43 @@ namespace Client.Handlers
 
         private void SubscribeEvents()
         {
-            _eventAggregator.GetEvent<ClientCreateContactMessage>().Subscribe(SendNewContact);
+            _eventAggregator.GetEvent<CreateContactMessage>().Subscribe(SendNewContact);
+            _eventAggregator.GetEvent<EditContactMessage>().Subscribe(SendEditContact);
+            _eventAggregator.GetEvent<GetAllContactsMessage>().Subscribe(SendGetAllContacts);
+        }
+
+        private void SendEditContact(Contact contact)
+        {
+            var jsonContact = JsonConvert.SerializeObject(contact);
+            var message = new MessageExchange(ActionType.EditContact, jsonContact);
+            var jsonMessage = JsonConvert.SerializeObject(message);
+
+            Writer.Write(jsonMessage);
+            
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Esperando resposta do servidor..\n\n");
+
+            var messageFromServer = Reader.ReadString();
+            
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish(messageFromServer);
+        }
+
+        private void SendGetAllContacts()
+        {
+            var message = new MessageExchange(ActionType.GetAllContacts);
+            var jsonMessage = JsonConvert.SerializeObject(message);
+
+            Writer.Write(jsonMessage);
+            
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Esperando resposta do servidor..\n\n");
+
+            var result = Reader.ReadString();
+            var contacts = JsonConvert.DeserializeObject<List<Contact>>(result);
+            
+            _eventAggregator.GetEvent<UpdateContactsMessage>().Publish(contacts);
+
+            var messageFromServer = Reader.ReadString();
+            
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish(messageFromServer);
         }
 
         private void SendNewContact(Contact newContact)

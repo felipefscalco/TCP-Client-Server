@@ -28,8 +28,8 @@
 
             <Menu Height="20" VerticalAlignment="Top">
                 <MenuItem Header="Menu" >
-                    <MenuItem Header="Criar contato" Command="{Binding ShowNewContactWindow}"></MenuItem>
-                    <MenuItem Header="Buscar todos contatos"></MenuItem>
+                    <MenuItem Header="Criar contato" Command="{Binding ShowNewContactWindowCommand}"></MenuItem>
+                    <MenuItem Header="Buscar todos contatos" Command="{Binding GetAllContactsCommand}"></MenuItem>
                 </MenuItem>
             </Menu>
 
@@ -99,7 +99,7 @@
                             <GridViewColumn Header="Ações">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Grid DataContext="{Binding ElementName=MainWindowViewModel}">
+                                        <Grid>
                                             <Grid.Style>
                                                 <Style TargetType="{x:Type Grid}">
                                                     <Style.Triggers>
@@ -125,7 +125,7 @@
 
                                             <Button
                                                 Grid.Column="1"
-                                                Command="{Binding EditContactCommand}"
+                                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListView}}, Path=DataContext.EditContactCommand}"
                                                 CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListView}}, Path=SelectedItem}"
                                                 Cursor="Hand"
                                                 ToolTip="Editar contato">
@@ -168,7 +168,7 @@
             </ListView>
         </Grid>
 
-        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
             <TextBox Background="Black" Foreground="White" IsReadOnly="True" Text="{Binding ConsoleText}" ></TextBox>
         </ScrollViewer>
     </Grid>
