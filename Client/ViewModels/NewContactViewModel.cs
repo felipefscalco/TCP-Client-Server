@@ -19,7 +19,7 @@ namespace Client.ViewModels
         public string Address
         {
             get => _address;
-            //set => SetProperty(ref _address, value.Remove(value.Length -4, 4));
+            set => SetProperty(ref _address, value.Remove(value.Length -4, 4));
         }
 
         public string Email
