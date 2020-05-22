@@ -8,7 +8,6 @@ using Prism.Mvvm;
 using Server.Message;
 using System;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 
 namespace Server.ViewModels
 {
@@ -43,7 +42,22 @@ namespace Server.ViewModels
             _eventAggregator.GetEvent<AddConsoleMessage>().Subscribe(AddConsoleMessageHandler);
             _eventAggregator.GetEvent<CreateContactMessage>().Subscribe(CreateContact);
             _eventAggregator.GetEvent<EditContactMessage>().Subscribe(EditContact);
+            _eventAggregator.GetEvent<DeleteContactMessage>().Subscribe(DeleteContact);
             _eventAggregator.GetEvent<GetAllContactsMessage>().Subscribe(async () => await GetAllContacts());
+        }
+
+        private void DeleteContact(Guid id)
+        {
+            try
+            {
+                _contactRepository.DeleteContactAsync(id);
+                _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish("Contato removido com sucesso.\n\n");
+                _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Contato removido com sucesso.\n\n");
+            }
+            catch
+            {
+                _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Erro ao tentar remover o contato.\n\n");
+            }
         }
 
         private void EditContact(Contact contactToEdit)
@@ -69,8 +83,8 @@ namespace Server.ViewModels
 
             _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish(contactsJson);
 
-            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Lista de contatos devolvida com sucesso.\n\n");
-            _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish("Lista de contatos devolvida com sucesso.\n\n");
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Lista de contatos recebida com sucesso.\n\n");
+            _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish("Lista de contatos recebida com sucesso.\n\n");
         }
 
         private void CreateContact(Contact newContact)

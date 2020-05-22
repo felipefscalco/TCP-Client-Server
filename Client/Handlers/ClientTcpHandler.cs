@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using System.Windows.Documents;
 
 namespace Client.Handlers
@@ -50,57 +51,43 @@ namespace Client.Handlers
 
         private void SubscribeEvents()
         {
-            _eventAggregator.GetEvent<CreateContactMessage>().Subscribe(SendNewContact);
-            _eventAggregator.GetEvent<EditContactMessage>().Subscribe(SendEditContact);
-            _eventAggregator.GetEvent<GetAllContactsMessage>().Subscribe(SendGetAllContacts);
+            _eventAggregator.GetEvent<GetAllContactsMessage>().Subscribe(SendServerGetAllContactsMessage);
+            _eventAggregator.GetEvent<CreateContactMessage>().Subscribe((contact) => SendServerMessage(ActionType.NewContact, contact));
+            _eventAggregator.GetEvent<EditContactMessage>().Subscribe((contact) => SendServerMessage(ActionType.EditContact, contact));
+            _eventAggregator.GetEvent<DeleteContactMessage>().Subscribe((id) => SendServerMessage(ActionType.DeleteContact, id));
         }
 
-        private void SendEditContact(Contact contact)
+        private void SendServerMessage(ActionType actionType, object content)
         {
-            var jsonContact = JsonConvert.SerializeObject(contact);
-            var message = new MessageExchange(ActionType.EditContact, jsonContact);
+            var jsonContent = JsonConvert.SerializeObject(content);
+            var message = new MessageExchange(actionType, jsonContent);
             var jsonMessage = JsonConvert.SerializeObject(message);
 
             Writer.Write(jsonMessage);
-            
+
             _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Esperando resposta do servidor..\n\n");
 
             var messageFromServer = Reader.ReadString();
-            
+
             _eventAggregator.GetEvent<AddConsoleMessage>().Publish(messageFromServer);
         }
 
-        private void SendGetAllContacts()
+        private void SendServerGetAllContactsMessage()
         {
             var message = new MessageExchange(ActionType.GetAllContacts);
             var jsonMessage = JsonConvert.SerializeObject(message);
 
             Writer.Write(jsonMessage);
-            
+
             _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Esperando resposta do servidor..\n\n");
 
             var result = Reader.ReadString();
             var contacts = JsonConvert.DeserializeObject<List<Contact>>(result);
-            
+
             _eventAggregator.GetEvent<UpdateContactsMessage>().Publish(contacts);
 
             var messageFromServer = Reader.ReadString();
-            
-            _eventAggregator.GetEvent<AddConsoleMessage>().Publish(messageFromServer);
-        }
 
-        private void SendNewContact(Contact newContact)
-        {
-            var jsonContact = JsonConvert.SerializeObject(newContact);
-            var message = new MessageExchange(ActionType.NewContact, jsonContact);
-            var jsonMessage = JsonConvert.SerializeObject(message);
-
-            Writer.Write(jsonMessage);
-            
-            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Esperando resposta do servidor..\n\n");
-
-            var messageFromServer = Reader.ReadString();
-            
             _eventAggregator.GetEvent<AddConsoleMessage>().Publish(messageFromServer);
         }
     }

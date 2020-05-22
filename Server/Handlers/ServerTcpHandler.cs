@@ -45,8 +45,8 @@ namespace Server.Handlers
             _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Aguardando cliente conectar..\n\n");
 
             _tcpClient = _server.AcceptTcpClient();
-
             _networkStream = _tcpClient.GetStream();
+
             Reader = new BinaryReader(_networkStream);
             Writer = new BinaryWriter(_networkStream);
 
@@ -73,6 +73,9 @@ namespace Server.Handlers
                     break;
                 case ActionType.EditContact:
                     message.EditContact(_eventAggregator);
+                    break;
+                case ActionType.DeleteContact:
+                    message.DeleteContact(_eventAggregator);
                     break;
                 default:
                     break;

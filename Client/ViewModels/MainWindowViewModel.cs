@@ -43,7 +43,7 @@ namespace Client.ViewModels
         public DelegateCommand ShowNewContactWindowCommand { get; private set; }
         public DelegateCommand GetAllContactsCommand { get; private set; }
         public DelegateCommand<Contact> EditContactCommand { get; private set; }
-        public DelegateCommand DeleteContactCommand { get; private set; }
+        public DelegateCommand<Contact> DeleteContactCommand { get; private set; }
 
         public MainWindowViewModel(IEventAggregator eventAggregator, ITcpHandler tcpHandler)
         {
@@ -64,6 +64,7 @@ namespace Client.ViewModels
         {
             ShowNewContactWindowCommand = new DelegateCommand(() => new NewContactView().ShowDialog());
             EditContactCommand = new DelegateCommand<Contact>((contact) => new EditContactView(contact).ShowDialog());
+            DeleteContactCommand = new DelegateCommand<Contact>((contact) => _eventAggregator.GetEvent<DeleteContactMessage>().Publish(contact.Id));
             GetAllContactsCommand = new DelegateCommand(() => _eventAggregator.GetEvent<GetAllContactsMessage>().Publish());
         }
 

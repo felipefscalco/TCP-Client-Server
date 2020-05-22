@@ -70,7 +70,14 @@ namespace Data.Sqlite.Repositories
         
         public async Task DeleteContactAsync(Guid contactId)
         {
-            throw new NotImplementedException();
+            using (var connection = _database.GetDbConnection())
+            {
+                connection.EnsureConnectionOpen();
+                
+                var sql = _contactsQueryBuilder.CreateDeleteContactQuery(contactId);
+
+                await _dbExecutor.ExecuteAsync(connection, sql).ConfigureAwait(false);
+            }
         }
     }
 }

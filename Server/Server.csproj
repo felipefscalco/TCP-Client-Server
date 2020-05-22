@@ -115,6 +115,7 @@
     <Compile Include="Extensions\ContainerRegistryExtensions.cs" />
     <Compile Include="Extensions\MessageExchangeExtensions.cs" />
     <Compile Include="Handlers\ServerTcpHandler.cs" />
+    <Compile Include="Message\DeleteContactMessage.cs" />
     <Compile Include="Message\EditContactMessage.cs" />
     <Compile Include="Message\GetAllContactsMessage.cs" />
     <Compile Include="Message\SendMessageToClientMessage.cs" />
