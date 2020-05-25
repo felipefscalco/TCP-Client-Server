@@ -7,6 +7,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Server.Message;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Server.ViewModels
@@ -44,6 +45,7 @@ namespace Server.ViewModels
             _eventAggregator.GetEvent<EditContactMessage>().Subscribe(EditContact);
             _eventAggregator.GetEvent<DeleteContactMessage>().Subscribe(DeleteContact);
             _eventAggregator.GetEvent<GetAllContactsMessage>().Subscribe(async () => await GetAllContacts());
+            _eventAggregator.GetEvent<SearchContactsMessage>().Subscribe(async (searchText) => await SearchContacts(searchText));
         }
 
         private void DeleteContact(Guid id)
@@ -74,6 +76,17 @@ namespace Server.ViewModels
                 _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish("Contato editado com sucesso.\n\n");
                 _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Contato editado com sucesso.\n\n");
             }
+        }
+
+        private async Task SearchContacts(string searchText)
+        {
+            var contacts = await _contactRepository.SearchContactsAsync(searchText);
+            var contactsJson = JsonConvert.SerializeObject(contacts);
+
+            _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish(contactsJson);
+
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish($"{contacts.ToList().Count} contato(s) encontrado(s).\n\n");
+            _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish($"{contacts.ToList().Count} contato(s) encontrado(s).\n\n");
         }
 
         private async Task GetAllContacts()

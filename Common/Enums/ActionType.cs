@@ -5,6 +5,7 @@
         NewContact,
         EditContact,
         DeleteContact,
-        GetAllContacts
+        GetAllContacts,
+        SearchContact
     }
 }

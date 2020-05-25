@@ -33,8 +33,8 @@
                 </MenuItem>
             </Menu>
 
-            <TextBox Grid.Row="0" Width="120" HorizontalAlignment="Right" Margin="0, 1, 87, 1"></TextBox>
-            <Button Grid.Row="0" Width="85" Content="Buscar contato " HorizontalAlignment="Right" Margin="0, 1, 0, 1"></Button>
+            <TextBox Grid.Row="0" Width="120" HorizontalAlignment="Right" Text="{Binding SearchText}" Margin="0, 1, 87, 1"></TextBox>
+            <Button Grid.Row="0" Width="85" Content="Buscar contato" Command="{Binding SearchContactCommand}" HorizontalAlignment="Right" Margin="0, 1, 0, 1"></Button>
 
             <ListView
                 Grid.Row="1"
@@ -80,7 +80,7 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Header="Email" Width="100">
+                            <GridViewColumn Header="Email" Width="150">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Email}"></TextBlock>
@@ -88,7 +88,7 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Header="Address" Width="210">
+                            <GridViewColumn Header="Address" Width="160">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Address}"></TextBlock>

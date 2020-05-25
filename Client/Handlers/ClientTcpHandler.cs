@@ -9,8 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
-using System.Threading.Tasks;
-using System.Windows.Documents;
 
 namespace Client.Handlers
 {
@@ -52,6 +50,7 @@ namespace Client.Handlers
         private void SubscribeEvents()
         {
             _eventAggregator.GetEvent<GetAllContactsMessage>().Subscribe(SendServerGetAllContactsMessage);
+            _eventAggregator.GetEvent<SearchContactsMessage>().Subscribe((searchText) => SendServerSearchContacts(searchText));
             _eventAggregator.GetEvent<CreateContactMessage>().Subscribe((contact) => SendServerMessage(ActionType.NewContact, contact));
             _eventAggregator.GetEvent<EditContactMessage>().Subscribe((contact) => SendServerMessage(ActionType.EditContact, contact));
             _eventAggregator.GetEvent<DeleteContactMessage>().Subscribe((id) => SendServerMessage(ActionType.DeleteContact, id));
@@ -66,6 +65,26 @@ namespace Client.Handlers
             Writer.Write(jsonMessage);
 
             _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Esperando resposta do servidor..\n\n");
+
+            var messageFromServer = Reader.ReadString();
+
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish(messageFromServer);
+        }
+
+        private void SendServerSearchContacts(string searchText)
+        {
+            var message = new MessageExchange(ActionType.SearchContact);
+            message.Content = searchText;
+            var jsonMessage = JsonConvert.SerializeObject(message);
+
+            Writer.Write(jsonMessage);
+
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Esperando resposta do servidor..\n\n");
+
+            var result = Reader.ReadString();
+            var contacts = JsonConvert.DeserializeObject<List<Contact>>(result);
+
+            _eventAggregator.GetEvent<UpdateContactsMessage>().Publish(contacts);
 
             var messageFromServer = Reader.ReadString();
 

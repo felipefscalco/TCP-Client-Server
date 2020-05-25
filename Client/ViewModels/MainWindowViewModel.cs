@@ -21,6 +21,7 @@ namespace Client.ViewModels
         private ObservableCollection<Contact> _contactList;
         private string _consoleText;
         private bool _isConnected;
+        private string _searchText;
 
         public ObservableCollection<Contact> ContactList
         {
@@ -40,10 +41,17 @@ namespace Client.ViewModels
             set => SetProperty(ref _consoleText, value);
         }
 
+        public string SearchText
+        {
+            get =>_searchText;
+            set => SetProperty(ref _searchText, value);
+        }
+
         public DelegateCommand ShowNewContactWindowCommand { get; private set; }
         public DelegateCommand GetAllContactsCommand { get; private set; }
         public DelegateCommand<Contact> EditContactCommand { get; private set; }
         public DelegateCommand<Contact> DeleteContactCommand { get; private set; }
+        public DelegateCommand SearchContactCommand { get; private set; }
 
         public MainWindowViewModel(IEventAggregator eventAggregator, ITcpHandler tcpHandler)
         {
@@ -64,8 +72,9 @@ namespace Client.ViewModels
         {
             ShowNewContactWindowCommand = new DelegateCommand(() => new NewContactView().ShowDialog());
             EditContactCommand = new DelegateCommand<Contact>((contact) => new EditContactView(contact).ShowDialog());
-            DeleteContactCommand = new DelegateCommand<Contact>((contact) => _eventAggregator.GetEvent<DeleteContactMessage>().Publish(contact.Id));
+            DeleteContactCommand = new DelegateCommand<Contact>((contact) => DeleteContact(contact));
             GetAllContactsCommand = new DelegateCommand(() => _eventAggregator.GetEvent<GetAllContactsMessage>().Publish());
+            SearchContactCommand = new DelegateCommand(() => SearchContacts(SearchText));
         }
 
         private void SubscribeEvents()
@@ -74,10 +83,24 @@ namespace Client.ViewModels
             _eventAggregator.GetEvent<UpdateContactsMessage>().Subscribe(UpdateContacts);
         }
 
+        private void SearchContacts(string searchText)
+        {
+            if (!string.IsNullOrEmpty(searchText))
+                _eventAggregator.GetEvent<SearchContactsMessage>().Publish(searchText);
+        }
+
+        private void DeleteContact(Contact contact)
+        {
+            ContactList.Remove(contact);
+            _eventAggregator.GetEvent<DeleteContactMessage>().Publish(contact.Id);
+        }
+
         private void UpdateContacts(List<Contact> contacts)
         {
             ContactList.Clear();
-            ContactList.AddRange(contacts);
+
+            if (contacts != null)
+                ContactList.AddRange(contacts);
         }
 
         private void AddConsoleMessageHandler(string message)

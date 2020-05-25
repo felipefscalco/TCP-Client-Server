@@ -25,9 +25,18 @@ namespace Data.Sqlite.Repositories
             _database = database;
         }
         
-        public Task<Contact> GetContactAsync(Guid contactId)
+        public async Task<IEnumerable<Contact>> SearchContactsAsync(string searchText)
         {
-            return null;
+            using (var connection = _database.GetDbConnection())
+            {
+                connection.EnsureConnectionOpen();
+
+                var sql = _contactsQueryBuilder.CreateSearchContactsByNameOrTelephoneQuery(searchText);
+
+                var dbContacts = await _dbExecutor.QueryAsync<Entities.Contact>(connection, sql).ConfigureAwait(false);
+                
+                return _contactMapper.Map(dbContacts);
+            }
         }       
 
         public async Task<IEnumerable<Contact>> GetAllContactsAsync()

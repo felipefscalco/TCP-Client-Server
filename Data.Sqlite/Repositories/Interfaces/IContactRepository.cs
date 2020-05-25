@@ -1,14 +1,13 @@
 ﻿using Common.Models;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading.Tasks;
 
 namespace Data.Sqlite.Repositories.Interfaces
 {
     public interface IContactRepository
     {
-        Task<Contact> GetContactAsync(Guid contactId);
+        Task<IEnumerable<Contact>> SearchContactsAsync(string searchText);
 
         Task<IEnumerable<Contact>> GetAllContactsAsync();
 

@@ -76,6 +76,9 @@ namespace Server.Handlers
                     break;
                 case ActionType.DeleteContact:
                     message.DeleteContact(_eventAggregator);
+                    break; 
+                case ActionType.SearchContact:
+                    _eventAggregator.GetEvent<SearchContactsMessage>().Publish(message.Content);
                     break;
                 default:
                     break;

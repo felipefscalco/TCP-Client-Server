@@ -19,7 +19,7 @@ namespace Client.ViewModels
         public string Address
         {
             get => _address;
-            set => SetProperty(ref _address, value.Remove(value.Length -4, 4));
+            set => SetProperty(ref _address, RemoveEspecialCharacters(value));
         }
 
         public string Email
@@ -54,6 +54,13 @@ namespace Client.ViewModels
                 _eventAggregator.GetEvent<CreateContactMessage>().Publish(newContact);
                 Window.Close();
             });
+        }
+        private string RemoveEspecialCharacters(string value)
+        {
+            if (!string.IsNullOrEmpty(value))
+                return value.Replace("\r", string.Empty).Replace("\n", string.Empty);
+
+            return value;
         }
     }
 }

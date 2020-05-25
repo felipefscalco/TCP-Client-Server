@@ -118,6 +118,7 @@
     <Compile Include="Message\DeleteContactMessage.cs" />
     <Compile Include="Message\EditContactMessage.cs" />
     <Compile Include="Message\GetAllContactsMessage.cs" />
+    <Compile Include="Message\SearchContactsMessage.cs" />
     <Compile Include="Message\SendMessageToClientMessage.cs" />
     <Compile Include="Message\CreateContactMessage.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />

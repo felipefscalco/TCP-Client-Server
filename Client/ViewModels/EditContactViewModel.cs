@@ -26,7 +26,7 @@ namespace Client.ViewModels
         public string Address
         {
             get => _address;
-            set => SetProperty(ref _address, value);
+            set => SetProperty(ref _address, RemoveEspecialCharacters(value));
         }
 
         public string Email
@@ -70,6 +70,14 @@ namespace Client.ViewModels
             Telephone = contact.Telephone;
             Email = contact.Email;
             Address = contact.Address;
+        }
+
+        private string RemoveEspecialCharacters(string value)
+        {
+            if (!string.IsNullOrEmpty(value))
+                return value.Replace("\r", string.Empty).Replace("\n", string.Empty);
+
+            return value;
         }
     }
 }
