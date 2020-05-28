@@ -8,6 +8,7 @@ using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Sockets;
 
 namespace Client.Handlers
@@ -50,7 +51,8 @@ namespace Client.Handlers
         private void SubscribeEvents()
         {
             _eventAggregator.GetEvent<GetAllContactsMessage>().Subscribe(SendServerGetAllContactsMessage);
-            _eventAggregator.GetEvent<SearchContactsMessage>().Subscribe((searchText) => SendServerSearchContacts(searchText));
+            _eventAggregator.GetEvent<SearchContactByNameMessage>().Subscribe((searchText) => SendServerSearchContacts(ActionType.SearchContactByName, searchText));
+            _eventAggregator.GetEvent<SearchContactByTelephoneMessage>().Subscribe((searchText) => SendServerSearchContacts(ActionType.SearchContactByTelephone, searchText));
             _eventAggregator.GetEvent<CreateContactMessage>().Subscribe((contact) => SendServerMessage(ActionType.NewContact, contact));
             _eventAggregator.GetEvent<EditContactMessage>().Subscribe((contact) => SendServerMessage(ActionType.EditContact, contact));
             _eventAggregator.GetEvent<DeleteContactMessage>().Subscribe((id) => SendServerMessage(ActionType.DeleteContact, id));
@@ -71,9 +73,9 @@ namespace Client.Handlers
             _eventAggregator.GetEvent<AddConsoleMessage>().Publish(messageFromServer);
         }
 
-        private void SendServerSearchContacts(string searchText)
+        private void SendServerSearchContacts(ActionType actionType, string searchText)
         {
-            var message = new MessageExchange(ActionType.SearchContact);
+            var message = new MessageExchange(actionType);
             message.Content = searchText;
             var jsonMessage = JsonConvert.SerializeObject(message);
 

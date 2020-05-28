@@ -48,6 +48,7 @@ namespace Client.ViewModels
         }
 
         public DelegateCommand ShowNewContactWindowCommand { get; private set; }
+        public DelegateCommand ShowSearchContactWindowCommand { get; private set; }
         public DelegateCommand GetAllContactsCommand { get; private set; }
         public DelegateCommand<Contact> EditContactCommand { get; private set; }
         public DelegateCommand<Contact> DeleteContactCommand { get; private set; }
@@ -71,6 +72,7 @@ namespace Client.ViewModels
         private void CreateCommands()
         {
             ShowNewContactWindowCommand = new DelegateCommand(() => new NewContactView().ShowDialog());
+            ShowSearchContactWindowCommand = new DelegateCommand(() => new SearchContactView().ShowDialog());
             EditContactCommand = new DelegateCommand<Contact>((contact) => new EditContactView(contact).ShowDialog());
             DeleteContactCommand = new DelegateCommand<Contact>((contact) => DeleteContact(contact));
             GetAllContactsCommand = new DelegateCommand(() => _eventAggregator.GetEvent<GetAllContactsMessage>().Publish());
@@ -86,7 +88,7 @@ namespace Client.ViewModels
         private void SearchContacts(string searchText)
         {
             if (!string.IsNullOrEmpty(searchText))
-                _eventAggregator.GetEvent<SearchContactsMessage>().Publish(searchText);
+                _eventAggregator.GetEvent<SearchContactByNameMessage>().Publish(searchText);
         }
 
         private void DeleteContact(Contact contact)

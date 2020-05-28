@@ -6,6 +6,7 @@
         EditContact,
         DeleteContact,
         GetAllContacts,
-        SearchContact
+        SearchContactByName,
+        SearchContactByTelephone
     }
 }

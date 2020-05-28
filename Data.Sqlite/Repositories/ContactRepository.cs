@@ -25,19 +25,33 @@ namespace Data.Sqlite.Repositories
             _database = database;
         }
         
-        public async Task<IEnumerable<Contact>> SearchContactsAsync(string searchText)
+        public async Task<IEnumerable<Contact>> SearchContactsByNameAsync(string searchText)
         {
             using (var connection = _database.GetDbConnection())
             {
                 connection.EnsureConnectionOpen();
 
-                var sql = _contactsQueryBuilder.CreateSearchContactsByNameOrTelephoneQuery(searchText);
+                var sql = _contactsQueryBuilder.CreateSearchContactsByNameQuery(searchText);
 
                 var dbContacts = await _dbExecutor.QueryAsync<Entities.Contact>(connection, sql).ConfigureAwait(false);
                 
                 return _contactMapper.Map(dbContacts);
             }
         }       
+
+        public async Task<IEnumerable<Contact>> SearchContactsByTelephoneAsync(string searchText)
+        {
+            using (var connection = _database.GetDbConnection())
+            {
+                connection.EnsureConnectionOpen();
+
+                var sql = _contactsQueryBuilder.CreateSearchContactsByTelephoneQuery(searchText);
+
+                var dbContacts = await _dbExecutor.QueryAsync<Entities.Contact>(connection, sql).ConfigureAwait(false);
+                
+                return _contactMapper.Map(dbContacts);
+            }
+        } 
 
         public async Task<IEnumerable<Contact>> GetAllContactsAsync()
         {

@@ -29,12 +29,10 @@
             <Menu Height="20" VerticalAlignment="Top">
                 <MenuItem Header="Menu" >
                     <MenuItem Header="Criar contato" Command="{Binding ShowNewContactWindowCommand}"></MenuItem>
+                    <MenuItem Header="Buscar contatos" Command="{Binding ShowSearchContactWindowCommand}"></MenuItem>
                     <MenuItem Header="Buscar todos contatos" Command="{Binding GetAllContactsCommand}"></MenuItem>
                 </MenuItem>
             </Menu>
-
-            <TextBox Grid.Row="0" Width="120" HorizontalAlignment="Right" Text="{Binding SearchText}" Margin="0, 1, 87, 1"></TextBox>
-            <Button Grid.Row="0" Width="85" Content="Buscar contato" Command="{Binding SearchContactCommand}" HorizontalAlignment="Right" Margin="0, 1, 0, 1"></Button>
 
             <ListView
                 Grid.Row="1"

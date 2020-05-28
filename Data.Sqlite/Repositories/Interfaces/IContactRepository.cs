@@ -7,7 +7,9 @@ namespace Data.Sqlite.Repositories.Interfaces
 {
     public interface IContactRepository
     {
-        Task<IEnumerable<Contact>> SearchContactsAsync(string searchText);
+        Task<IEnumerable<Contact>> SearchContactsByNameAsync(string searchText);
+
+        Task<IEnumerable<Contact>> SearchContactsByTelephoneAsync(string searchText);
 
         Task<IEnumerable<Contact>> GetAllContactsAsync();
 

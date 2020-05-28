@@ -115,15 +115,20 @@
     <Compile Include="Messages\DeleteContactMessage.cs" />
     <Compile Include="Messages\EditContactMessage.cs" />
     <Compile Include="Messages\GetAllContactsMessage.cs" />
-    <Compile Include="Messages\SearchContactsMessage.cs" />
+    <Compile Include="Messages\SearchContactByNameMessage.cs" />
+    <Compile Include="Messages\SearchContactByTelephoneMessage.cs" />
     <Compile Include="Messages\UpdateContactsMessage.cs" />
     <Compile Include="ViewModels\EditContactViewModel.cs" />
     <Compile Include="ViewModels\NewContactViewModel.cs" />
+    <Compile Include="ViewModels\SearchContactViewModel.cs" />
     <Compile Include="Views\EditContactView.xaml.cs">
       <DependentUpon>EditContactView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewContactView.xaml.cs">
       <DependentUpon>NewContactView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchContactView.xaml.cs">
+      <DependentUpon>SearchContactView.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\ContactUserControl.xaml">
       <SubType>Designer</SubType>
@@ -147,6 +152,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\NewContactView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SearchContactView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

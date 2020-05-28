@@ -45,7 +45,8 @@ namespace Server.ViewModels
             _eventAggregator.GetEvent<EditContactMessage>().Subscribe(EditContact);
             _eventAggregator.GetEvent<DeleteContactMessage>().Subscribe(DeleteContact);
             _eventAggregator.GetEvent<GetAllContactsMessage>().Subscribe(async () => await GetAllContacts());
-            _eventAggregator.GetEvent<SearchContactsMessage>().Subscribe(async (searchText) => await SearchContacts(searchText));
+            _eventAggregator.GetEvent<SearchContactsByNameMessage>().Subscribe(async (searchText) => await SearchContactsByName(searchText));
+            _eventAggregator.GetEvent<SearchContactsByTelephoneMessage>().Subscribe(async (searchText) => await SearchContactsByTelephone(searchText));
         }
 
         private void DeleteContact(Guid id)
@@ -78,9 +79,20 @@ namespace Server.ViewModels
             }
         }
 
-        private async Task SearchContacts(string searchText)
+        private async Task SearchContactsByName(string searchText)
         {
-            var contacts = await _contactRepository.SearchContactsAsync(searchText);
+            var contacts = await _contactRepository.SearchContactsByNameAsync(searchText);
+            var contactsJson = JsonConvert.SerializeObject(contacts);
+
+            _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish(contactsJson);
+
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish($"{contacts.ToList().Count} contato(s) encontrado(s).\n\n");
+            _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish($"{contacts.ToList().Count} contato(s) encontrado(s).\n\n");
+        }
+
+        private async Task SearchContactsByTelephone(string searchText)
+        {
+            var contacts = await _contactRepository.SearchContactsByTelephoneAsync(searchText);
             var contactsJson = JsonConvert.SerializeObject(contacts);
 
             _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish(contactsJson);

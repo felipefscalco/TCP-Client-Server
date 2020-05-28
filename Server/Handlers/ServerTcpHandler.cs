@@ -68,18 +68,27 @@ namespace Server.Handlers
                 case ActionType.NewContact:
                     message.CreateNewContact(_eventAggregator);
                     break;
+
                 case ActionType.GetAllContacts:
                     _eventAggregator.GetEvent<GetAllContactsMessage>().Publish();
                     break;
+
                 case ActionType.EditContact:
                     message.EditContact(_eventAggregator);
                     break;
+
                 case ActionType.DeleteContact:
                     message.DeleteContact(_eventAggregator);
                     break; 
-                case ActionType.SearchContact:
-                    _eventAggregator.GetEvent<SearchContactsMessage>().Publish(message.Content);
+
+                case ActionType.SearchContactByName:
+                    _eventAggregator.GetEvent<SearchContactsByNameMessage>().Publish(message.Content);
                     break;
+                    
+                case ActionType.SearchContactByTelephone:
+                    _eventAggregator.GetEvent<SearchContactsByTelephoneMessage>().Publish(message.Content);
+                    break;
+
                 default:
                     break;
             }            

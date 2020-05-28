@@ -5,7 +5,9 @@ namespace Data.Sqlite.Builders.Interfaces
 {
     public interface IContactsQueryBuilder
     {
-        string CreateSearchContactsByNameOrTelephoneQuery(string searchText);
+        string CreateSearchContactsByNameQuery(string searchText);
+
+        string CreateSearchContactsByTelephoneQuery(string searchText);
         
         string CreateGetAllContactsQuery();
 
