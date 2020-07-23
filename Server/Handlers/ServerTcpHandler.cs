@@ -41,8 +41,8 @@ namespace Server.Handlers
             _server = new TcpListener(8888);
             _server.Start();
 
-            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Servidor inicializado..\n\n");
-            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Aguardando cliente conectar..\n\n");
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Server initialized.\n\n");
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Waiting for client to connect..\n\n");
 
             _tcpClient = _server.AcceptTcpClient();
             _networkStream = _tcpClient.GetStream();
@@ -50,7 +50,7 @@ namespace Server.Handlers
             Reader = new BinaryReader(_networkStream);
             Writer = new BinaryWriter(_networkStream);
 
-            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Cliente conectado.\n\n");
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Client connected.\n\n");
 
             while (true)
             {

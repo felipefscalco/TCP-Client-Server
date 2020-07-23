@@ -54,12 +54,12 @@ namespace Server.ViewModels
             try
             {
                 _contactRepository.DeleteContactAsync(id);
-                _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish("Contato removido com sucesso.\n\n");
-                _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Contato removido com sucesso.\n\n");
+                _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish("Contact removed with success.\n\n");
+                _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Contact removed with success.\n\n");
             }
             catch
             {
-                _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Erro ao tentar remover o contato.\n\n");
+                _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Error while trying to remove contact.\n\n");
             }
         }
 
@@ -67,8 +67,8 @@ namespace Server.ViewModels
         {
             if (string.IsNullOrEmpty(contactToEdit.Name) || string.IsNullOrEmpty(contactToEdit.Email))
             {
-                _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish("Não foi possível editar o contato, nome e email são obrigatórios.\n\n");
-                _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Erro ao tentar editar contato.\n\n");
+                _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish("Wasn't possible to edit contact, name and e-mail are mandatory.\n\n");
+                _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Error trying to edit contact, name and e-mail are mandatory.\n\n");
                 return;
             }
             else
@@ -86,8 +86,8 @@ namespace Server.ViewModels
 
             _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish(contactsJson);
 
-            _eventAggregator.GetEvent<AddConsoleMessage>().Publish($"{contacts.ToList().Count} contato(s) encontrado(s).\n\n");
-            _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish($"{contacts.ToList().Count} contato(s) encontrado(s).\n\n");
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish($"{contacts.ToList().Count} contact(s) found.\n\n");
+            _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish($"{contacts.ToList().Count} contact(s) found.\n\n");
         }
 
         private async Task SearchContactsByTelephone(string searchText)
@@ -97,8 +97,8 @@ namespace Server.ViewModels
 
             _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish(contactsJson);
 
-            _eventAggregator.GetEvent<AddConsoleMessage>().Publish($"{contacts.ToList().Count} contato(s) encontrado(s).\n\n");
-            _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish($"{contacts.ToList().Count} contato(s) encontrado(s).\n\n");
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish($"{contacts.ToList().Count} contact(s) found.\n\n");
+            _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish($"{contacts.ToList().Count} contact(s) found.\n\n");
         }
 
         private async Task GetAllContacts()
@@ -108,23 +108,23 @@ namespace Server.ViewModels
 
             _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish(contactsJson);
 
-            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Lista de contatos recebida com sucesso.\n\n");
-            _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish("Lista de contatos recebida com sucesso.\n\n");
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("List of contacts received with success.\n\n");
+            _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish("List of contacts received with success.\n\n");
         }
 
         private void CreateContact(Contact newContact)
         {
             if (string.IsNullOrEmpty(newContact.Name) || string.IsNullOrEmpty(newContact.Email))
             {
-                _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish("Não foi possível inserir o contato, nome e email são obrigatórios.\n\n");
-                _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Erro ao tentar inserir contato.\n\n");
+                _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish("Wasn't possible to add contact, name and e-mail are mandatory.\n\n");
+                _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Wasn't possible to add contact, name and e-mail are mandatory.\n\n");
                 return;
             }
             else
             {
                 _contactRepository.InsertContactAsync(newContact);
-                _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish("Contato inserido com sucesso.\n\n");
-                _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Contato inserido com sucesso.\n\n");
+                _eventAggregator.GetEvent<SendMessageToClientMessage>().Publish("Contact inserted with success.\n\n");
+                _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Contact inserted with success.\n\n");
             }
         }
 

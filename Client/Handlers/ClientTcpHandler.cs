@@ -5,10 +5,8 @@ using Common.Messages;
 using Common.Models;
 using Newtonsoft.Json;
 using Prism.Events;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
 
 namespace Client.Handlers
@@ -33,7 +31,7 @@ namespace Client.Handlers
         {
             _tcpClient = new TcpClient("localhost", 8888);
 
-            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Conexão estabelecida com o servidor..\n\n");
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Conenction estabilished with server..\n\n");
 
             _networkStream = _tcpClient.GetStream();
             Reader = new BinaryReader(_networkStream);
@@ -66,7 +64,7 @@ namespace Client.Handlers
 
             Writer.Write(jsonMessage);
 
-            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Esperando resposta do servidor..\n\n");
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Waiting server response..\n\n");
 
             var messageFromServer = Reader.ReadString();
 
@@ -81,7 +79,7 @@ namespace Client.Handlers
 
             Writer.Write(jsonMessage);
 
-            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Esperando resposta do servidor..\n\n");
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Waiting server response..\n\n");
 
             var result = Reader.ReadString();
             var contacts = JsonConvert.DeserializeObject<List<Contact>>(result);
@@ -100,7 +98,7 @@ namespace Client.Handlers
 
             Writer.Write(jsonMessage);
 
-            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Esperando resposta do servidor..\n\n");
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Waiting server response..\n\n");
 
             var result = Reader.ReadString();
             var contacts = JsonConvert.DeserializeObject<List<Contact>>(result);

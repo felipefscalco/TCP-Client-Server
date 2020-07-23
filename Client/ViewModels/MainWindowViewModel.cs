@@ -110,7 +110,7 @@ namespace Client.ViewModels
 
         private async Task InitializeClient()
         {
-            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Conectando com o servidor..\n\n");
+            _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Conecting with server..\n\n");
 
             var maxRetryAttempts = 5;
             var pauseBetweenFailures = TimeSpan.FromSeconds(5);
@@ -125,7 +125,7 @@ namespace Client.ViewModels
             });
 
             if (result.Outcome == OutcomeType.Failure)
-                _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Não foi possível conectar com o servidor..\n\n");
+                _eventAggregator.GetEvent<AddConsoleMessage>().Publish("Wasn't possible to connect to the server..\n\n");
             else
                 IsConnected = true;
         }
