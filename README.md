@@ -1,9 +1,9 @@
 # TCP Client-Server
 
-#### C# implementation of a electronic calendar using TCP sockets.
+#### C# implementation of a electronic calendar using TCP sockets
 
 Tools utilized:
-* Persisted data utilizing SQLite.
+* Persisted data utilizing SQLite
 * Prism MVVM framework
 
 
